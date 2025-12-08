@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <title> CHICHA SPECIAL DAY</title>
+        <link rel+"stylesheet" href="style.css">
+    </head>
+    <body>
+
+        <!--Start Screen-->
+        <div id="start" class="screen active">
+            <h1> 🎉 HII, AISHA!!! 🎉</h1>
+            <button onclick="showScreen('menu')">START</button>
+        </div>
+
+        <!--Menu-->
+        <div id="menu" class="screen">
+            <h2>🎀 Choose what to open 🎀</h2>
+            <div class="choices">
+                <button onclick="showScreen('letter')">💌 Letter</button>
+                <button onclick="showScreen('video')">📹 Video</button>
+                <button onclick="showScreen('gifts')">🎁 Gifts</button>
+            </div>
+        </div>
+
+        <!--Letter-->
+        <div id="letter" class="screen">
+            <h2>💌 My Letter to You</h2>
+            <p> Dear, Aisha. Hi! its been a while isnt it? I hope youre doing very well and happy. 21 eh? Wow, what a serious number. anyway, Happy Birthday yaa Aisha Nabila Khairunnisa. Someone I met at the start of the year, and from there, the course of my life changed since then. <br><br> To be able to know you, talked to you, shared my days with you, and giving love and affection together with you are something that I will always treasure and wont ever forget in my life. Because it was the most amazing and the happiest moment in my life.<br><br> I hope in this new age of yours, life will be much easier for you. I hope you find the peace, even from places or things you didnt expect. I hope you can achieve anything you want, even if its slowly... but surely, I know that youre capable to achieve anything. I hope you keep being surrounded with people who loves you the way you are, even when the world are against you.<br><br> You deserve anything in this world and life. Your pure loving heart and how amazing you are as person is the proof for it.<br><br> I always pray for you, even when I dont know whats happening in your life.<br><br> Your name are and will be in my prayers. Always.<br><br> - Ojanio :) <br><br> (btw ini ada versi handwritten nya) <br> I miss you, everyday</p>
+            <button onclick="showScreen('menu')">BACK</button>
+        </div>
+
+        <!--Video-->
+        <div id="video" class="screen">
+            <h2> 📹 </h2>
+            <video controls width="100%">
+                <sources src="video.mp4" type="video/mp4">
+            </video>
+            <button onclick="showScreen('menu')">BACK</button>
+        </div>
+        
+        <!--Gifts-->
+        <div id="gifts" class="screen">
+            <h2> 🎁 Click to Open Your Gifts 🎁 </h2>
+            <p> (Click on the gift image to see the description) </p>
+            <div id="giftBoxes"></div>
+            <button id="doneBtn" class="hidden" onclick="showScreen('final')">DONE</button>
+        </div>
+
+        <!--Modal-->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <div class="gift-card">
+              <img id="giftImage" src="" alt="Gift">
+              <p id="giftDesc"></p>
+              </div>
+            </div>
+          </div>
+
+        <!--Final-->
+        <div id="final" class="screen">
+            <h1>🎉 HAPPY 22ND BIRTHDAY, CHICHA!!! 🎉</h1>
+            <p>With Love, Ojanio 💖</p>
+        </div>
+
+        <script>
+            const screens = document.querySelectorAll(".screen");
+            function showScreen(id) {
+                screens.forEach(s => s.classList.remove("active"));
+                document.getElementById(id).classList.add("active");
+            }
+
+            //Gifts
+            const gifts = [
+                {img: "gift1.png", desc:"The Jersey of the other love of my life"},
+                {img: "gift2.png", desc:"I wanted to buy it for you since we are still together, it felt like it was made for you"},
+                {img: "gift3.png", desc:"Something that youve been craving for! You can claim it to get a free llaollao of your choice"},
+                {img: "gift4.png", desc:"You were so happy when your hair smells good hehe"},
+                {img: "gift5.png", desc:"For your period cramps hehe"}
+            ];
+
+            const giftBoxes = document.getElementById("giftBoxes");
+            const doneBtn = document.getElementById("doneBtn");
+            let revealedCount = 0;
+
+            giftBoxes.innerHTML ="";
+            gifts.forEach(gift => {
+                const box = document.createElement("div");
+                box.className = "gift";
+                box.innerHTML = `<p>🎁</p><img alt="Gift">`;
+
+                const imgEl = box.querySelector("img");
+                imgEl.src = gift.img;
+
+                box.addEventListener("click", () => {
+                    if (!box.classList.contains("opened")) {
+                        box.classList.add("opened");
+                        revealedCount++;
+                        if (revealedCount === gifts.length) {
+                            doneBtn.classList.remove("hidden")
+                        }
+                    }
+                }, {once:false});
+
+            imgEl.addEventListener("click", (ev) => {
+                
+                ev.stopPropagation();
+                openModal(gift.img, gift.desc); 
+            });
+
+            giftBoxes.appendChild(box);
+        });
+
+        const modal = document.getElementById("modal");
+        const modalImg = document.getElementById("giftImg");
+        const modalDesc = document.getElementById("giftDesc");
+
+        function openModal(src,desc) {
+          giftImage.src = src;
+          giftDesc.textContent = desc;
+          modal.classList.remove("hidden");
+        }
+
+        function closeModal() {
+            modal.classList.add("hidden");
+        }
+
+        window.addEventListener("click", (e) => {
+            if(e.target === modal) closeModal();
+        });
+
+        function createBalloon(){
+            const b = document.createElement("div");
+            b.className = "balloon";
+            b.style.left = Math.random()*100 + "vw";
+            b.style.animationDuration = (8+Math.random()*5) + "s";
+            document.body.appendChild(b);
+            setTimeout(()=>b.remove(), 12000);
+        }
+
+        setInterval(createBalloon, 2000);
+        </script>
+    </body>
+</html>
